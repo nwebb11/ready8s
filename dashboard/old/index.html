@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>⎈Dashboard⎈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+  <style>
+    div[data-tooltip]:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      border-top: 0.5em solid #357EDD;
+      border-left: 0.5em solid transparent;
+      border-right: 0.5em solid transparent;
+      display: none;
+    }
+
+    div[data-tooltip]:after {
+      content: attr(data-tooltip);
+      position: absolute;
+      color: white;
+      top: -1.5em;
+      left: -1em;
+      background: #357EDD;
+      padding: .25em .75em;
+      border-radius: .5em;
+      white-space: nowrap;
+      display: none;
+    }
+
+    div[data-tooltip]:hover:before,
+    div[data-tooltip]:hover:after {
+      display: inline;
+    }
+
+    header {
+      z-index: 999;
+    }
+
+    hr {
+      width: 90%;
+      text-align: left;
+    }
+
+  </style>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js" integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg==" crossorigin="anonymous"></script>
+  
+</head>
+
+<body class="h-min-100 bg-white sans-serif">
+  <main>
+    <div data-name="component">
+      <header class="bg-blue w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
+        <nav class="f6 fw6 ttu tracked">
+          <a class="link dim white dib mr3" href="index.html" title="Home">Home</a>
+          <a class="link dim white dib mr3" href="deployments.html" title="Deployments">Deployments</a>
+          <a class="link dim white dib mr3" href="services.html" title="Services">Services</a>
+          <a class="link dim white dib mr3" href="#" title="PersistentVolumes">Persistent Volumes</a>
+          <a class="link dim white dib" href="#" title="About">About</a>
+        </nav>
+      </header>
+    </div>
+    <div class="center mv3 flex flex-wrap">
+      <div class="center" style="width: 30%; height: 20%;">
+        <canvas id="cpuLineChart" width="500" height="200"></canvas>
+      </div>
+      <div class="center" style="width: 30%; height: 20%;">
+        <canvas id="ramLineChart" width="500" height="200"></canvas>
+      </div>
+    </div>
+    <div class="center mv4 flex flex-wrap">
+      <div class="center" style="width:15%; height:15%;">
+        <canvas id="podChart" width="100" height="100"></canvas>
+      </div>
+      <div class="center" style="width:15%; height:15%;">
+        <canvas id="cpuChart" width="100" height="100"></canvas>
+      </div>
+      <div class="center" style="width:15%; height:20%;">
+        <canvas id="ramChart" width="100" height="100"></canvas>
+      </div>
+    </div>
+    <h3 class="mh6">Nodes - Pods</h3> 
+    <hr>    
+    <div id="content" class="mw9 center"></div>
+    <div id="node-content" class="mw10 mv5 center"></div>
+  </main>
+
+  <script src="graph.js"></script>
+  <script src="piechart.js"></script>
+  <script src="get-nodes.js"></script>
+  <script src="app.js"></script>
+  
+</body>
+
+</html>

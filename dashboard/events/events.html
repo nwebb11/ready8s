@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+  <style>
+    div[data-tooltip]:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      border-top: 0.5em solid #357EDD;
+      border-left: 0.5em solid transparent;
+      border-right: 0.5em solid transparent;
+      display: none;
+    }
+
+    div[data-tooltip]:after {
+      content: attr(data-tooltip);
+      position: absolute;
+      color: white;
+      top: -1.5em;
+      left: -1em;
+      background: #357EDD;
+      padding: .25em .75em;
+      border-radius: .5em;
+      white-space: nowrap;
+      display: none;
+    }
+
+    div[data-tooltip]:hover:before,
+    div[data-tooltip]:hover:after {
+      display: inline;
+    }
+
+    header {
+      z-index: 999;
+    }
+
+    hr {
+      width: 90%;
+      text-align: left;
+    }
+
+    .box {
+      width: 40%;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.2);
+      padding: 35px;
+      border: 2px solid #fff;
+      border-radius: 20px/50px;
+      background-clip: padding-box;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      transition: opacity 500ms;
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .overlay:target {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .popup {
+      margin: 70px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      width: 30%;
+      position: relative;
+      transition: all 5s ease-in-out;
+    }
+
+    .popup h2 {
+      margin-top: 0;
+      color: #333;
+      font-family: Tahoma, Arial, sans-serif;
+    }
+
+    .popup .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      transition: all 200ms;
+      font-size: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .popup .close:hover {
+      color: #06D85F;
+    }
+
+    .popup .content {
+      max-height: 30%;
+      overflow: auto;
+    }
+
+    @media screen and (max-width: 700px){
+      .box{
+        width: 70%;
+      }
+      .popup{
+        width: 70%;
+      }
+    }
+
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js" integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg==" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+</head>
+
+<body class="h-min-100 bg-white sans-serif">
+  <main>
+    <div data-name="component">
+      <header class="bg-blue w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
+        <nav class="f6 fw6 ttu tracked pb2">
+          <a class="link dim white dib mr3" href="../home/index.html" title="Home">Home</a>
+          <a class="link dim white dib mr3" href="../deployments/pods.html" title="Deployments">Deployments</a>
+          <a class="link dim white dib mr3" href="../networking/services.html" title="Networking">Networking</a>
+          <a class="link dim white dib mr3" href="../storage/p-volumeclaim.html" title="Storage">Storage</a>
+          <a class="link dim white dib mr3" href="events.html" title="Events">Events</a>
+          <a class="link dim white dib" href="../about/about.html" title="About">About</a>
+        </nav>
+      </header>
+    </div>
+    <div class="center flex mt1 mb2" style="width:50%;">
+      <div class="center" style="width:20%; height:20%;">
+        <canvas id="warningChart" width="100" height="100"></canvas>
+      </div>
+      <div class="center" style="width:20%; height:20%;">
+        <canvas id="normalChart" width="100" height="100"></canvas>
+      </div>
+      <div class="center" style="width:20%; height:20%;">
+        <canvas id="totalChart" width="100" height="100"></canvas>
+      </div>
+    </div>
+    <div id="content1" class="center">
+      <div class="bg-light-gray center ba b--black-10">
+        <h3 class="mh6">Event Log</h3>
+        <table id="event_table" class="display" style="width:100%;"></table>
+      </div>
+    </div>
+  </main>
+  <script src="eventlog.js"></script>
+</body>
+
+</html>

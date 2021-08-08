@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>⎈Dashboard⎈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+  <style>
+
+    header {
+      z-index: 999;
+    }
+
+    table { 
+      border: 2px solid #fff;
+      border-collapse: separate;
+      border-left: 0;
+      border-radius: 4px;
+      border-spacing: 0px;
+    }
+
+    thead {
+      display: table-header-group;
+      vertical-align: middle;
+      border-color: inherit;
+      border-collapse: separate;
+    }
+
+    tr {
+      display: table-row;
+      vertical-align: inherit;
+      border-color: inherit;
+    }
+
+    th {
+      height: 50px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    th, td {
+      padding: 5px 4px 6px 4px; 
+      border-left: 2px solid #fff;    
+    }
+
+    td {
+      border-top: 2px solid #fff;
+      vertical-align: top;	  
+    }
+
+    thead:first-child tr:first-child th:first-child, tbody:first-child tr:first-child td:first-child {
+      border-radius: 4px 0 0 0;
+    }
+
+    thead:last-child tr:last-child th:first-child, tbody:last-child tr:last-child td:first-child {
+      border-radius: 0 0 0 4px;
+    }
+
+  </style>
+</head>
+
+<body class="h-min-100 bg-white sans-serif">
+  <main>
+    <div data-name="component">
+      <header class="bg-blue fixed w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
+        <nav class="f6 fw6 ttu tracked">
+          <a class="link dim white dib mr3" href="index.html" title="Home">Home</a>
+          <a class="link dim white dib mr3" href="deployments.html" title="Deployments">Deployments</a>
+          <a class="link dim white dib mr3" href="services.html" title="Services">Services</a>
+          <a class="link dim white dib mr3" href="#" title="PersistentVolumes">Persistent Volumes</a>
+          <a class="link dim white dib" href="#" title="About">About</a>
+        </nav>
+      </header>
+    </div>
+    <br>
+    <br>
+    <div class="center mv5 flex flex-wrap">
+      <div class="center" style="width: 30%; height: 20%;">
+        <canvas id="cpuLineChart" width="500" height="200"></canvas>
+      </div>
+      <div class="center" style="width: 30%; height: 20%;">
+        <canvas id="ramLineChart" width="500" height="200"></canvas>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js" integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg==" crossorigin="anonymous"></script>
+  <script src="graph.js"></script>
+</body>
+
+</html>

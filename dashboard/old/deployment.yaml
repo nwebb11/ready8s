@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidecar-proxy
+spec:
+  selector:
+    matchLabels:
+      app: sidecar-proxy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sidecar-proxy
+    spec:
+      containers:
+      - name: sidecar-proxy
+        image: nathanw97/sidecar-proxy:latest
+        env:
+        - name: "PORT"
+          value: "8001"

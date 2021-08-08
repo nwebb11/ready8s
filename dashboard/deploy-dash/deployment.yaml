@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-proxy
+spec:
+  selector:
+    matchLabels:
+      app: dashboard-proxy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dashboard-proxy
+    spec:
+      containers:
+      - name: dashboard-proxy
+        image: nathanw97/dashboard:latest
+        env:
+        - name: "PORT"
+          value: "8001"
