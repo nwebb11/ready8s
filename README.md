@@ -3,7 +3,7 @@ Automate the deployment of on-premise, highly available, production-ready, Kuber
 
 ## HA
 
-Using HAProxy to act as load load balancer on each master node, which provides the API Endpoint that redirects to localhost:443. Each node in the cluster is configured with localhost:443 as its endpoint URL. This provices a HA control plane with an external load balancer.
+Using HAProxy to act as load balancer on each master node, which provides the API Endpoint that redirects to localhost:443. Each node in the cluster is configured with localhost:443 as its endpoint URL. This provices a HA control plane with an external load balancer.
 
 ## Instructions
 
