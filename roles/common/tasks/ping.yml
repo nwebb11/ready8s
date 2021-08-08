@@ -1,0 +1,3 @@
+---
+- name: Ping each host to ensure connectivity before starting
+  ping:

@@ -1,0 +1,57 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+nodeRegistration:
+  kubeletExtraArgs:
+    cgroup-driver: "systemd"
+localAPIEndpoint:
+  advertiseAddress: "{{ ansible_default_ipv4.address }}"
+  bindPort: 6443
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+etcd:
+  local:
+    dataDir: "/var/lib/etcd"
+networking:
+  serviceSubnet: "{{ service_subnet }}"
+  podSubnet: "{{ pod_subnet }}"
+  dnsDomain: "{{ dnsdomain }}"
+kubernetesVersion: "v{{ kube_version }}"
+controlPlaneEndpoint: "127.0.0.1:443"
+apiServer:
+  extraArgs:
+{% if policy == 'enabled' %}
+    authorization-mode: "Node,RBAC"
+    audit-policy-file: "/etc/kubernetes/audit/policy.yml"
+    audit-log-path: "/var/log/kubernetes/audit"
+    audit-log-maxage: "7"
+    audit-log-maxbackup: "10"
+    audit-log-maxsize: "200"
+{% endif %}
+  extraVolumes:
+  - name: k8s-audits
+    hostPath: "/etc/kubernetes/audit"
+    mountPath: "/etc/kubernetes/audit"
+    readOnly: true
+    pathType: DirectoryOrCreate
+{% if policy == 'enabled' %}
+  - name: k8s-audits-logs
+    hostPath: "/var/log/kubernetes"
+    mountPath: "/var/log/kubernetes"
+    readOnly: false
+    pathType: DirectoryOrCreate
+{% endif %}
+  certSANs:
+{% for item in certsans %}
+  - "{{ item.name }}"
+{% endfor %}
+{% for host in groups.master %}
+  - "{{ hostvars[host].ansible_default_ipv4.address }}"
+{% endfor %}
+controllerManager: {}
+scheduler: {}
+certificatesDir: "/etc/kubernetes/pki"
+clusterName: "{{ cluster_name }}"
+dns:
+  type: CoreDNS

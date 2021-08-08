@@ -1,0 +1,13 @@
+---
+service_subnet: 10.96.0.0/12
+pod_subnet: 192.168.0.0/16
+dnsdomain: myclusterdnsdomain.local
+kube_version: 1.21.1
+policy: enabled
+cluster_name: myclustername
+certsans:
+  - name: localhost
+  - name: myclustername.domain
+
+system_reserved_memory: 512Mi
+kube_reserved_memory: 128Mi

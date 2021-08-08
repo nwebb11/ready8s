@@ -1,0 +1,11 @@
+---
+- name: Disable SWAP file and configuration
+  block:
+  - name: Turn SWAP off
+    shell: swapoff -a
+
+  - name: Uncomment SWAP file
+    replace:
+      path: /etc/fstab
+      regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+      replace: '#\1'

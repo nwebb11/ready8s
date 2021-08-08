@@ -1,0 +1,34 @@
+---
+- name: Install rook toolbox
+  block:
+
+    - name: Create rook-toolbox directory
+      file:
+        path: $HOME/rook/toolbox
+        state: directory
+        mode: '0775'
+
+    - name: Copy toolbox.yaml file to first master
+      copy:
+        src: toolbox.yaml
+        dest: $HOME/rook/toolbox
+
+    - name: Apply toolbox.yaml deployment to the cluster
+      shell: |
+        cd $HOME/rook/toolbox
+        kubectl create -f toolbox.yaml
+      register: toolbox_apply_output
+
+    - name: Debug rook toolbox.yaml deployment
+      debug:
+        msg: "{{ toolbox_apply_output.stdout }}"
+
+    - name: Wait for toolbox pods to enter the running state before connecting to it
+      shell: kubectl -n rook-ceph rollout status deploy/rook-ceph-tools
+      register: toolbox_state_output
+
+    - name: Debug rook toolbox pod state
+      debug:
+        msg: "{{ toolbox_state_output.stdout }}"
+
+  when: '"true" in replicatestorage'

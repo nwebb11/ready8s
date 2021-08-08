@@ -1,0 +1,42 @@
+---
+- name: Calico
+  block:
+    - name: Get Calico config yaml
+      get_url:
+        url: https://docs.projectcalico.org/manifests/calico.yaml
+        dest: /home/kube/calico.yaml
+
+    - name: Apply Calico yaml
+      shell: kubectl apply -f calico.yaml
+      register: install_calico_output
+
+    - name: Debug install calico output
+      debug:
+        msg: "{{ install_calico_output.stdout }}"
+  when: '"calico" in networkplugin'
+
+- name: Weave
+  block:
+    - name: Install Weave
+      shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+      register: install_weave_output
+
+    - name: Debug install weave output
+      debug:
+        msg: "{{ install_weave_output.stdout }}"
+  when: '"weave" in networkplugin'
+
+- name: Flannel
+  block:
+    - name: Install Flannel
+      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+      register: install_flannel_output
+
+    - name: Debug install flannel output
+      debug:
+        msg: "{{ install_flannel_output.stdout }}"
+  when: '"flannel" in networkplugin'
+
+- name: Wait 60 seconds for the container network to build
+  pause:
+    seconds: 60

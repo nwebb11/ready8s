@@ -1,0 +1,21 @@
+--- 
+- name: haproxy
+  apt:
+    name: haproxy
+    state: latest
+
+- name: template haproxy config
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart haproxy
+
+- name: start haproxy
+  systemd:
+    name:  haproxy
+    state: started
+    enabled: yes
+

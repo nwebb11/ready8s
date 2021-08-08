@@ -1,0 +1,32 @@
+---
+- name: Apply and create MetalLB namespace
+  shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
+  register: metallb_namespace_output
+
+- name: Debug MetalLB namespace apply
+  debug:
+    msg: "{{ metallb_namespace_output.stdout }}"
+
+- name: Create and deploy MetalLB to the cluster
+  shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
+  register: metallb_deploy_output
+
+- name: Debug MetalLB deployment
+  debug:
+    msg: "{{ metallb_deploy_output.stdout }}"
+
+- name: Create and permit service accounts for components to function properly
+  shell: kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+  register: service_account_output
+
+- name: Debug service account creation
+  debug:
+    msg: "{{ service_account_output.stdout }}"
+
+- name: Apply MetalLB ConfigMap
+  shell: kubectl apply -f $HOME/metallb/metallb-configmap.yml
+  register: metallb_configmap_output
+
+- name: Debug applying MetalLB ConfigMap
+  debug:
+    msg: "{{ metallb_configmap_output.stdout }}"

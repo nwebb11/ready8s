@@ -1,0 +1,37 @@
+---
+- name: Ping Check
+  import_tasks: ping.yml
+
+- name: Check for updates
+  import_tasks: updateupgrade.yml
+
+- name: Disable SWAP
+  import_tasks: swap.yaml
+#  when: ansible_facts['os_family'] == "Ubuntu"
+  
+- name: Enable and load br_netfilter module
+  import_tasks: netfilter.yaml
+#  when: ansible_facts['os_family'] == "Ubuntu"
+  
+- name: Let iptables see bridged traffic
+  import_tasks: iptables.yaml
+#  when: ansible_facts['os_family'] == "Ubuntu"
+  
+- name: Enable and open ports with UFW
+  import_tasks: ufw.yaml
+#  when: ansible_facts['os_family'] == "Ubuntu"
+
+- name: Install and configure containerd
+  import_tasks: containerd.yml
+  
+#- name: Install and configure Docker
+#  import_tasks: docker.yaml
+#  when: ansible_facts['os_family'] == "Ubuntu"
+  
+- name: Install Kubernetes - Kubeadm, Kubelet, Kubectl
+  import_tasks: k8s.yaml
+#  when: ansible_facts['os_family'] == "Ubuntu"
+  
+- name: Configure and delopy cluster
+  import_tasks: kubeadm.yml
+#  when: ansible_facts['os_family'] == "Ubuntu"

@@ -1,0 +1,24 @@
+---
+- name: Init cluster on first master
+  shell: kubeadm init --config /etc/kubernetes/kubeadm.config --upload-certs
+  become: yes
+  register: init_cluster_output
+
+- name: Debug init cluster output
+  debug:
+    msg: "{{ init_cluster_output.stdout }}"
+
+- name: Create .kube directory
+  file:
+    path: $HOME/.kube
+    state: directory
+
+- name: Copy admin.conf to previously created directory
+  shell: sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+- name: Set correct permissions on admin.conf
+  shell: sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: Wait 60 seconds for cluster to build
+  pause:
+    seconds: 60

@@ -1,0 +1,8 @@
+---
+- name: Apply UFW profile for master nodes
+  block:
+  - name: Apply profile
+    ufw:
+      rule: allow
+      name: MasterNodeProfile-TCP
+    notify: Reload UFW

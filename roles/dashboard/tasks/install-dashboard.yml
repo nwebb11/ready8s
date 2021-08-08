@@ -1,0 +1,30 @@
+---
+- name: Install Dashboard
+  block:
+
+    - name: Create dashboard directory
+      file:
+        path: $HOME/Dashboard
+        state: directory
+    
+    - name: Copy dashboard.yaml file to first master
+      copy:
+        src: dashboard.yaml
+        dest: $HOME/Dashboard
+
+    - name: Copy metrics-server.yaml file to first master
+      copy:
+        src: metrics-server.yaml
+        dest: $HOME/Dashboard
+
+    - name: Create and apply dashboard and metrics-server yaml configuration files
+      shell: |
+        cd $HOME/Dashboard
+        kubectl create -f dashboard.yaml -f metrics-server.yaml
+      register: dashboard_metrics_output
+
+    - name: Debug create and apply dashboard and metrics-server yaml
+      debug:
+        msg: "{{ dashboard_metrics_output.stdout }}"
+
+  when: '"true" in dashboard'

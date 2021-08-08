@@ -1,0 +1,48 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: default-rbac
+subjects:
+  - kind: ServiceAccount
+    # Reference to upper's `metadata.name`
+    name: default
+    # Reference to upper's `metadata.namespace`
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sidecar-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: sidecar-proxy
+  ports:
+  - protocol: TCP
+    port: 8001
+    targetPort: 8001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidecar-proxy
+spec:
+  selector:
+    matchLabels:
+      app: sidecar-proxy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sidecar-proxy
+    spec:
+      containers:
+      - name: sidecar-proxy
+        image: nathanw97/dashboard:latest
+        env:
+        - name: "PORT"
+          value: "8001"

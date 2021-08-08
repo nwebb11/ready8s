@@ -1,0 +1,81 @@
+---
+- hosts: master[0]
+  become: yes
+  tasks:
+
+  - name: Get join token for the control plane
+    shell: kubeadm init phase upload-certs --upload-certs | sed -n '$p'
+    register: control_plane_token
+
+  - name: Get join command for the cluster
+    shell: kubeadm token create --print-join-command
+    register: kubeadm_join_cmd
+
+  - name: Add token to dummy host
+    add_host:
+      name: "TOKEN_HOLDER"
+      token: "{{ kubeadm_join_cmd.stdout }}"
+      controlplane: "{{ control_plane_token.stdout }}"
+
+  - name: Debug token
+    debug:
+      msg: "{{ hostvars['TOKEN_HOLDER']['token'] }}"
+
+  - name: Debug controlplane
+    debug:
+      msg: "{{ hostvars['TOKEN_HOLDER']['controlplane'] }}"
+
+
+- hosts: master[1:]
+  serial: 1
+  tasks:
+
+  - name: Run kubeadm join command for masters
+    shell: >
+      {{ hostvars['TOKEN_HOLDER']['token'] }} --control-plane --certificate-key {{ hostvars['TOKEN_HOLDER']['controlplane'] }}
+    become: yes
+    register: master_join_output
+
+  - name: Debug master join output
+    debug:
+      msg: "{{ master_join_output.stdout }}"
+
+  - name: Create .kube directory
+    file:
+      path: $HOME/.kube
+      state: directory
+
+  - name: Copy admin.conf to previously created directory
+    shell: sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+  - name: Set correct permissions on admin.conf
+    shell: sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+- hosts: master[0]
+  tasks:
+
+  - name: Untaint all master nodes
+    block:
+      - name: Apply kubectl taint command
+        shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+        register: taint_output
+
+      - name: Debug taint output
+        debug:
+          msg: "{{ taint_output.stdout }}"
+    when: '"true" in multimaster'
+
+
+- hosts: worker
+  serial: 1
+  tasks:
+
+  - name: Run kubeadm join command for workers
+    shell: "{{ hostvars['TOKEN_HOLDER']['token'] }}"
+    become: yes
+    register: worker_join_output
+
+  - name: Debug worker join output
+    debug:
+      msg: "{{ worker_join_output.stdout }}"

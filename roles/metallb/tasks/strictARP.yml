@@ -1,0 +1,22 @@
+---
+#- name: Test strictARP changes within kube-proxy config.
+#  shell: |
+#    kubectl get configmap kube-proxy -n kube-system -o yaml | \
+#    sed -e "s/strictARP: false/strictARP: true/" | \
+#    kubectl diff -f - -n kube-system
+#  register: strictARP_test_output
+
+#- name: Debug strictARP potential changes.
+#  debug:
+#    msg: "{{ strictARP_test_output.stdout }}"
+
+- name: Apply the strictARP changes to the kube-proxy config
+  shell: |
+    kubectl get configmap kube-proxy -n kube-system -o yaml | \
+    sed -e "s/strictARP: false/strictARP: true/" | \
+    kubectl apply -f - -n kube-system
+  register: strictARP_apply_output
+
+- name: Debug strictARP apply output
+  debug:
+    msg: "{{ strictARP_apply_output.stdout }}"

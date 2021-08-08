@@ -1,0 +1,61 @@
+---
+- name: Install needed packages
+  apt:
+    pkg:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    state: present
+  retries: 5
+  delay: 10
+
+#- name: Add Goggle GPG Key CURL
+#  shell: |
+#    curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+#  become: yes
+#  retries: 5
+#  delay: 10
+
+#- name: Add Kubernetes repo
+#  shell: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+#  become: yes
+#  retries: 5
+#  delay: 10
+
+- name: Add Google GPG key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  become: yes
+  retries: 5
+  delay: 10
+
+- name: Add K8s repository
+  copy:
+    dest: "/etc/apt/sources.list.d/kubernetes.list"
+    content: |
+      deb https://apt.kubernetes.io/ kubernetes-xenial main
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  retries: 5
+  delay: 10
+
+- name: Check package index and update cache
+  apt:
+    update_cache: yes
+  become: yes
+  retries: 5
+  delay: 10
+
+- name: Install required packages
+  apt:
+    pkg:
+    - kubelet
+    - kubeadm
+    - kubectl
+    state: present
+  become: yes
+  retries: 5
+  delay: 10

@@ -1,0 +1,29 @@
+---
+- name: Create br_netfilter.conf under modules
+  copy:
+    dest: "/etc/modules-load.d/br_netfilter.conf"
+    content: |
+      br_netfilter
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reboot the server
+  shell: sleep 5 && reboot
+  async: 1
+  poll: 0
+
+- name: Wait for reconnect
+  wait_for_connection:
+    #port: 22
+    #host: "{{ ansible_default_ipv4.address }}"
+    #search_regex: OpenSSH
+    delay: 10
+    timeout: 300
+  #connection: local
+
+#- name: grep output
+#  shell: lsmod | grep br_netfilter
+#  register: output
+
+#- debug: var=output.stdout_lines

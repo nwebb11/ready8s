@@ -1,0 +1,49 @@
+---
+- name: Install UFW
+  apt:
+    name: ufw
+    state: latest
+  become: yes
+  retries: 5
+
+- name: Enable UFW and start on reboot
+  ufw:
+    state: enabled
+
+- name: Copy UFW profile
+  copy:
+    src: k8snode.ufw.profile
+    dest: /etc/ufw/applications.d
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Apply UFW profiles for all nodes
+  ufw:
+    rule: allow
+    name: "{{ item }}"
+  with_items:
+    - AllNodesProfile-TCP
+    - AllNodesProfile-UDP
+
+#- hosts:
+#  master:
+#  - name: Apply UFW profile for masters
+#    ufw:
+#      rule: allow
+#      name: MasterNodeProfile-TCP
+#    notify: Reload UFW
+#  - name: Reload UFW
+#    ufw:
+#      state: reloaded
+
+#- hosts:
+#  worker:
+#  - name: Apply UFW profile for workers
+#    ufw:
+#      rule: allow
+#      name: WorkerNodeProfile-TCP
+#    notify: Reload UFW
+#  - name: Reload UFW
+#    ufw:
+#      state: reloaded

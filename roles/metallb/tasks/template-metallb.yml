@@ -1,0 +1,10 @@
+---
+- name: Create MetalLB directory
+  file:
+    path: $HOME/metallb
+    state: directory
+
+- name: Template MetalLB ConfigMap
+  template:
+    src: metallb-configmap.yml.j2
+    dest: $HOME/metallb/metallb-configmap.yml

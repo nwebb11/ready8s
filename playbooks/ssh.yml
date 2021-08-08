@@ -1,0 +1,61 @@
+---
+ - hosts: all
+   become: yes
+   vars:
+     - kube_password: '$1$SomeSalt$RWABQEU7Z6dJW3JUt6nmr/'
+   tasks:
+
+   - name: Create docker user group
+     group:
+       name: docker
+       state: present
+       gid: 998
+
+   - name: Add a new user named provision
+     user:
+       name: kube
+       password: "{{ kube_password }}"
+       groups: docker, sudo
+       state: present
+       shell: /bin/bash
+       system: no
+       createhome: yes
+       home: "/home/kube"
+
+   - name: Add kube user to the sudoers
+     copy:
+       dest: "/etc/sudoers.d/kube"
+       content: |
+         kube  ALL=(ALL)  NOPASSWD: ALL
+
+   - name: Deploy SSH Key
+     authorized_key:
+       user: kube
+       key: "{{ lookup('file', '/home/njhw/.ssh/id_rsa.pub') }}"
+       state: present
+
+   - name: Disable Password Authentication
+     lineinfile:
+       dest: "/etc/ssh/sshd_config"
+       regexp: '^PasswordAuthentication'
+       line: "PasswordAuthentication no"
+       state: present
+       backup: yes
+     notify:
+       - restart ssh
+
+   - name: Disable Root Login
+     lineinfile:
+       dest: "/etc/ssh/sshd_config"
+       regexp: '^PermitRootLogin'
+       line: "PermitRootLogin no"
+       state: present
+       backup: yes
+     notify:
+       - restart ssh
+
+   handlers:
+   - name: restart ssh
+     service:
+       name: sshd
+       state: restarted

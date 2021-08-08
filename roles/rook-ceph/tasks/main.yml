@@ -1,0 +1,6 @@
+---
+- name: Install and configure rook-ceph
+  import_tasks: install-rook-ceph.yml
+
+- name: Install and configure rook toolbox
+  import_tasks: install-rook-toolbox.yml

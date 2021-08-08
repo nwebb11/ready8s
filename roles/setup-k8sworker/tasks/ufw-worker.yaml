@@ -1,0 +1,8 @@
+---
+- name: Apply UFW profile for workers
+  block:
+  - name: Apply UFW profile
+    ufw:
+      rule: allow
+      name: WorkerNodeProfile-TCP
+    notify: Reload UFW

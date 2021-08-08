@@ -1,0 +1,39 @@
+---
+#- vars:
+#    cluster_name: noworriescluster
+#    dnsdomain: noworriescluster.local
+#    policy: enabled
+#    kube_version: 1.19.2
+#    service_subnet: 10.96.0.0/12
+#    pod_subnet: 10.244.0.0/16
+#  certsans:
+#    - name: localhost
+#    - name: myclustername.mydnsdomain
+#    system_reserved_memory: 512Mi
+#    kube_reserved_memory: 128Mi
+
+- name: Create audit directory   
+  file:
+    path: /etc/kubernetes/audit
+    state: directory
+
+- name: Template audit config
+  template:
+    src: policy.yml.j2
+    dest: /etc/kubernetes/audit/policy.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy kubelet args
+  template:
+    src: kubelet-defaults.config
+    dest: /etc/default/kubelet
+
+- name: Template kubeadm config
+  template:
+    src: kubeadm.config.j2
+    dest: /etc/kubernetes/kubeadm.config
+    owner: root
+    group: root
+    mode: '0644'

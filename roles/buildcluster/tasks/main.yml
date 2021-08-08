@@ -1,0 +1,7 @@
+---
+- name: Initalise cluster on first master
+  import_tasks: kubeadm-init.yml
+
+- name: Install and configure chosen network plugin
+  import_tasks: network-plugins.yml
+

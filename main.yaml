@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - common
+
+- hosts: master
+  become: yes
+  roles:
+    - setup-k8smaster
+
+- hosts: worker
+  become: yes
+  roles:
+    - setup-k8sworker
+
+- hosts: master[0]
+  roles:
+    - buildcluster
+
+- import_playbook: playbooks/connectnodes.yml
+
+- hosts: master[0]
+  roles:
+    - metallb
+
+- hosts: master[0]
+  roles:
+    - dashboard
+
+- hosts: master[0]
+  roles:
+    - rook-ceph

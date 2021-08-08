@@ -1,0 +1,9 @@
+---
+#- name: Reload sysctl
+#  import_tasks: sysctl-handler.yaml
+  
+- name: Reload UFW
+  import_tasks: ufw-handler.yaml
+  
+- name: Reload Docker daemon and systemd, and enable Docker on boot
+  import_tasks: docker-handler.yaml

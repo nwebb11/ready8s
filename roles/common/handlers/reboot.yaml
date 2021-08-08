@@ -1,0 +1,5 @@
+---
+- name: Reboot host
+  shell: sleep 5 && reboot
+  async: 1
+  poll: 0
