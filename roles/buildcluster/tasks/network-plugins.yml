@@ -52,7 +52,3 @@
       debug:
         msg: "{{ install_cilium_output.stdout }}"
   when: '"cilium" in networkplugin'
-
-- name: Wait 60 seconds for the container network to build
-  pause:
-    seconds: 10

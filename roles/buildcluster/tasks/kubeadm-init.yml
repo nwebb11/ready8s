@@ -18,7 +18,3 @@
 
 - name: Set correct permissions on admin.conf
   shell: sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-- name: Wait 60 seconds for cluster to build
-  pause:
-    seconds: 10
