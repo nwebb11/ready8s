@@ -25,7 +25,7 @@ master3
 
 #Change this variable to configure a different network plugin
 [master:vars]
-networkplugin=weave
+networkplugin=cilium
 multimaster=true
 replicatestorage=true
 dashboard=true

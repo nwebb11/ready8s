@@ -21,4 +21,4 @@
 
 - name: Wait 60 seconds for cluster to build
   pause:
-    seconds: 60
+    seconds: 10

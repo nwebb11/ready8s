@@ -1,8 +1,8 @@
 ---
-service_subnet: 10.96.0.0/12
-pod_subnet: 192.168.0.0/16
-dnsdomain: myclusterdnsdomain.local
-kube_version: 1.21.1
+service_subnet: 172.16.0.0/21
+pod_subnet: 10.0.0.0/8
+dnsdomain: cluster.local
+kube_version: 1.23.1
 policy: enabled
 cluster_name: myclustername
 certsans:

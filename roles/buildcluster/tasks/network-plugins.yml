@@ -37,6 +37,22 @@
         msg: "{{ install_flannel_output.stdout }}"
   when: '"flannel" in networkplugin'
 
+- name: Cilium
+  block:
+    - name: Install Cilium
+      shell: |
+        curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz{,.sha256sum}
+        sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
+        sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+        rm cilium-linux-amd64.tar.gz{,.sha256sum}
+        /usr/local/bin/cilium install
+      register: install_cilium_output
+
+    - name: Debug install cilium output
+      debug:
+        msg: "{{ install_cilium_output.stdout }}"
+  when: '"cilium" in networkplugin'
+
 - name: Wait 60 seconds for the container network to build
   pause:
-    seconds: 60
+    seconds: 10
