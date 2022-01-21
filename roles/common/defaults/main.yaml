@@ -4,10 +4,14 @@ pod_subnet: 10.0.0.0/8
 dnsdomain: cluster.local
 kube_version: 1.23.1
 policy: enabled
-cluster_name: myclustername
+cluster_name: ready8scluster
 certsans:
   - name: localhost
-  - name: myclustername.domain
+  - name: ready8scluster.saa-cons.co.uk
+  - name: ready8scluster
+  - name: 10.1.11.216
+  - name: 10.1.11.217
+  - name: 10.1.11.218
 
 system_reserved_memory: 512Mi
 kube_reserved_memory: 128Mi
