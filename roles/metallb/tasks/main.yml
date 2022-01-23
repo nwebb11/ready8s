@@ -11,4 +11,4 @@
     - name: Configure and deploy MetalLB (metallb)
       import_tasks: install-metallb.yml
 
-  when: '"true" in loadbalancer'
+  when: '"True" in loadbalancer'

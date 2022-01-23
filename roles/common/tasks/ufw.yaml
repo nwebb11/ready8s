@@ -29,7 +29,7 @@
         - AllNodesProfile-TCP
         - AllNodesProfile-UDP
 
-  when: '"true" in ufwfirewall'
+  when: '"True" in ufwfirewall'
 
 #- hosts:
 #  master:
