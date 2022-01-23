@@ -16,8 +16,8 @@ host_key_checking=True
 #ready8s options
 networkplugin=cilium
 multimaster=true
-loadbalancer=True
-ufwfirewall=True
+loadbalancer=true
+ufwfirewall=true
 replicatestorage=false
 dashboard=true
 
