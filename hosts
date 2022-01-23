@@ -24,8 +24,8 @@ ready8s-master3
 [master:vars]
 networkplugin=cilium
 multimaster=true
-loadbalancer=True
-ufwfirewall=True
+loadbalancer=true
+ufwfirewall=true
 replicatestorage=false
 dashboard=true
 

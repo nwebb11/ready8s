@@ -8,4 +8,4 @@
         name: WorkerNodeProfile-TCP
       notify: Reload UFW
 
-  when: 'True in ufwfirewall'
+  when: '"true" in ufwfirewall'
