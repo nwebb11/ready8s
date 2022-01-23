@@ -1,9 +1,14 @@
 ---
-- name: Template MetalLB ConfigMap
-  import_tasks: template-metallb.yml
+- name: Install & Configure MetalLB (metallb)
+  block:
 
-- name: Configure Strict ARP on cluster
-  import_tasks: strictARP.yml
+    - name: Template MetalLB ConfigMap (metallb)
+      import_tasks: template-metallb.yml
 
-- name: Configure and deploy MetalLB
-  import_tasks: install-metallb.yml
+    - name: Configure Strict ARP on cluster (metallb)
+      import_tasks: strictARP.yml
+
+    - name: Configure and deploy MetalLB (metallb)
+      import_tasks: install-metallb.yml
+
+  when: 'True in loadbalancer'

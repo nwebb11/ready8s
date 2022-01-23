@@ -1,8 +1,11 @@
 ---
-- name: Apply UFW profile for master nodes
+- name: Apply UFW profile for master nodes (setup-k8smaster)
   block:
-  - name: Apply profile
-    ufw:
-      rule: allow
-      name: MasterNodeProfile-TCP
-    notify: Reload UFW
+
+    - name: Apply UFW profile & reload (setup-k8smaster)
+      ufw:
+        rule: allow
+        name: MasterNodeProfile-TCP
+      notify: Reload UFW
+
+  when: 'True in ufwfirewall'

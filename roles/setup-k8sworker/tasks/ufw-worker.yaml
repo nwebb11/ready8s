@@ -1,8 +1,11 @@
 ---
-- name: Apply UFW profile for workers
+- name: Apply UFW profile for worker nodes (setup-k8sworker)
   block:
-  - name: Apply UFW profile
-    ufw:
-      rule: allow
-      name: WorkerNodeProfile-TCP
-    notify: Reload UFW
+
+    - name: Apply UFW profile & reload (setup-k8sworker)
+      ufw:
+        rule: allow
+        name: WorkerNodeProfile-TCP
+      notify: Reload UFW
+
+  when: 'True in ufwfirewall'
