@@ -6,7 +6,7 @@
       git:
         repo: 'https://github.com/rook/rook.git'
         dest: $HOME/rook/rook-ceph
-        version: v1.6.1
+        version: v1.8.6
     
     - name: Create and apply crds, common and operator yaml configuration files
       shell: |
