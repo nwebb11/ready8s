@@ -2,7 +2,7 @@
 service_subnet: 172.16.0.0/21
 pod_subnet: 10.0.0.0/8
 dnsdomain: cluster.local
-kube_version: 1.23.4
+kube_version: 1.23.6
 policy: enabled
 cluster_name: ready8scluster
 certsans:
