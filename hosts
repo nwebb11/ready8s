@@ -1,34 +1,33 @@
 #example of hosts.ini file
 [all]
 #define hostname/ip of each node
-ready8s-master1 ansible_host=10.1.11.216
-ready8s-master2 ansible_host=10.1.11.217
-ready8s-master3 ansible_host=10.1.11.218
+ready8s1-master1 ansible_host=10.2.21.85
+ready8s1-master2 ansible_host=10.2.21.86
+ready8s1-master3 ansible_host=10.2.21.87
+ready8s1-worker1 ansible_host=10.2.21.88
 
 [all:vars]
 #ansible machine host user
-ansible_user=kube
+ansible_user=techserv
 #ssh key location, should be copy on to each node before hand
-ansible_ssh_private_key_file=/home/ubuntu/.ssh/id_rsa
+ansible_ssh_private_key_file=~/.ssh/ready8s1
 #set the ansible interpreter, should always be python3
 ansible_python_interpreter=/usr/bin/python3
 host_key_checking=True
 #ready8s options
-networkplugin=cilium
-multimaster=true
+networkplugin=cilium2
+multimaster=false
 loadbalancer=true
 ufwfirewall=true
 replicatestorage=false
-dashboard=true
+dashboard=false
 
 [master]
 #define each master to its group
-ready8s-master1
-ready8s-master2
-ready8s-master3
+ready8s1-master1
+ready8s1-master2
+ready8s1-master3
 
 [worker]
 #define each worker to it group
-#worker1
-#worker2
-#worker3
+ready8s1-worker1
