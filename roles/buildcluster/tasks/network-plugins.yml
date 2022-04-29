@@ -51,12 +51,12 @@
     - name: Debug install cilium output
       debug:
         msg: "{{ install_cilium_output.stdout }}"
-  when: '"cilium" in networkplugin'
+  when: '"remove-this" in networkplugin'
 
 - name: Cilium2
   block:
     - name: Install Cilium2
-      shell: kubectl apply -f https://git.saa-cons.co.uk/nathanw/multi-read8ys/-/raw/main/install-cilium.yaml
+      shell: kubectl apply -f https://raw.githubusercontent.com/nwebb11/ready8s/v2.3.2/roles/buildcluster/files/install-cilium.yaml
       register: install_cilium2_output
 
     - name: Debug install cilium2 output
