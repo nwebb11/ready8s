@@ -1,6 +1,6 @@
 ---
-service_subnet: 172.16.0.0/21
-pod_subnet: 172.16.8.0/24
+service_subnet: 172.26.0.0/18
+pod_subnet: 172.26.64.0/18
 dnsdomain: cluster.local
 kube_version: 1.23.6
 policy: enabled
