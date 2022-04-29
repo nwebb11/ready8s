@@ -52,3 +52,14 @@
       debug:
         msg: "{{ install_cilium_output.stdout }}"
   when: '"cilium" in networkplugin'
+
+- name: Cilium2
+  block:
+    - name: Install Cilium2
+      shell: kubectl apply -f https://git.saa-cons.co.uk/nathanw/multi-read8ys/-/raw/main/install-cilium.yaml
+      register: install_cilium2_output
+
+    - name: Debug install cilium2 output
+      debug:
+        msg: "{{ install_cilium2_output.stdout }}"
+  when: '"cilium2" in networkplugin'
