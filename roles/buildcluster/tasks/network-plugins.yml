@@ -63,3 +63,29 @@
       debug:
         msg: "{{ install_cilium2_output.stdout }}"
   when: '"cilium2" in networkplugin'
+
+- name: Cilium-helm
+  block:
+    - name: Install Helm
+      shell: |
+        curl https://baltocdn.com/helm/signing.asc | apt-key add -
+        apt-get install apt-transport-https --yes
+        echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+        apt-get update -y
+        apt-get install helm -y
+      register: install_helm_output
+
+    - name: Debug install helm output
+      debug:
+        msg: "{{ install_helm_output.stdout }}"
+
+    - name: Install Cilium-helm
+      shell: |
+        helm repo add cilium https://helm.cilium.io/
+        helm install cilium cilium/cilium --version 1.11.4 --namespace kube-system
+      register: install_cilium_helm_output
+
+    - name: Debug install cilium-helm output
+      debug:
+        msg: "{{ install_cilium_helm_output.stdout }}"
+  when: '"helm" in networkplugin'
