@@ -1,6 +1,4 @@
-#example of hosts.ini file
 [all]
-#define hostname/ip of each node
 ready8s1-master1 ansible_host=10.2.21.85
 ready8s1-master2 ansible_host=10.2.21.86
 ready8s1-master3 ansible_host=10.2.21.87
@@ -12,10 +10,10 @@ ansible_user=techserv
 #ssh key location, should be copy on to each node before hand
 ansible_ssh_private_key_file=~/.ssh/ready8s1
 #set the ansible interpreter, should always be python3
-ansible_python_interpreter=/usr/bin/python3
-host_key_checking=True
+#ansible_python_interpreter=/usr/bin/python3
+#host_key_checking=True
 #ready8s options
-networkplugin=cilium2
+networkplugin=cilium
 multimaster=false
 loadbalancer=true
 ufwfirewall=false
@@ -23,11 +21,9 @@ replicatestorage=false
 dashboard=false
 
 [master]
-#define each master to its group
 ready8s1-master1
 ready8s1-master2
 ready8s1-master3
 
 [worker]
-#define each worker to it group
 ready8s1-worker1
