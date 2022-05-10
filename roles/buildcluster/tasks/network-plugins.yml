@@ -58,8 +58,6 @@
         curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz{,.sha256sum}
         sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
         sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
-        rm cilium-linux-amd64.tar.gz{,.sha256sum}
-        /usr/local/bin/cilium install
       register: setup_cilium_output
 
     - name: Debug install cilium output
@@ -67,14 +65,15 @@
         msg: "{{ setup_cilium_output.stdout }}"
 
     - name: Install Cilium
-      shell: /usr/local/bin/cilium install
+      shell: /usr/local/bin/cilium install --ipam kubernetes
       retries: 5
       delay: 20
-      register: install_cilium_output
+      register: install_ciliumcli_output
+      until: install_ciliumcli_output.rc == 0
 
     - name: Debug install cilium output
       debug:
-        msg: "{{ install_cilium_output.stdout }}"
+        msg: "{{ install_ciliumcli_output.stdout }}"
   when: '"cilium-cli" in networkplugin'
 
 - name: Cilium-helm
