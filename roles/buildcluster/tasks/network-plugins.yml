@@ -41,6 +41,8 @@
   block:
     - name: Install Cilium
       shell: kubectl apply -f https://raw.githubusercontent.com/nwebb11/ready8s/v2.3.2/roles/buildcluster/files/install-cilium.yaml
+      retries: 5
+      delay: 2
       register: install_cilium_output
 
     - name: Debug install cilium output
