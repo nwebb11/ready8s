@@ -44,6 +44,7 @@
       retries: 5
       delay: 20
       register: install_cilium_output
+      until: install_cilium_output.rc == 0
 
     - name: Debug install cilium output
       debug:
