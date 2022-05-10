@@ -29,6 +29,10 @@
 - hosts: master[1:]
   serial: 1
   tasks:
+  
+  - name: Wait for cluster to build
+    pause:
+      seconds: 60
 
   - name: Run kubeadm join command for masters
     shell: >
