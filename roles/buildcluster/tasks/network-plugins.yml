@@ -85,6 +85,7 @@
         echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
         sudo apt-get update -y
         sudo apt-get install helm -y
+        helm repo add cilium https://helm.cilium.io/
       register: install_helm_output
 
     - name: Debug install helm output
@@ -92,10 +93,11 @@
         msg: "{{ install_helm_output.stdout }}"
 
     - name: Install Cilium-helm
-      shell: |
-        helm repo add cilium https://helm.cilium.io/
-        helm install cilium cilium/cilium --version 1.11.4 --namespace kube-system --set ipam.mode=kubernetes --set hubble.enabled=false --set operator.replicas=1
+      shell: helm install cilium cilium/cilium --version 1.11.4 --namespace kube-system --set ipam.mode=kubernetes --set hubble.enabled=false --set operator.replicas=1
+      retries: 5
+      delay: 20
       register: install_cilium_helm_output
+      until: install_cilium_helm_output.rc == 0
 
     - name: Debug install cilium-helm output
       debug:
