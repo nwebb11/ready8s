@@ -30,24 +30,16 @@
     - name: Debug Calico operator create output
       debug:
         msg: "{{ install_calico_op_output.stdout }}"
-
-    - name: Create Calico operator custom resources
-      shell: kubectl create -f https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
-      retries: 5
-      delay: 20
-      register: install_calico_op_cr_output
-      until: install_calico_op_cr_output.rc == 0
-
-    - name: Debug Calico operator custom resource create output
-      debug:
-        msg: "{{ install_calico_op_cr_output.stdout }}"
   when: '"tigera-op" in networkplugin'
 
 - name: Weave
   block:
     - name: Install Weave
       shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+      retries: 5
+      delay: 20
       register: install_weave_output
+      until: install_weave_output.rc == 0
 
     - name: Debug install weave output
       debug:
