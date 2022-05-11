@@ -18,6 +18,31 @@
         msg: "{{ install_calico_output.stdout }}"
   when: '"calico" in networkplugin'
 
+- name: Calico-operator
+  block:
+    - name: Create Calico operator
+      shell: kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+      retries: 5
+      delay: 20
+      register: install_calico_op_output
+      until: install_calico_op_output.rc == 0
+
+    - name: Debug Calico operator create output
+      debug:
+        msg: "{{ install_calico_op_output.stdout }}"
+
+    - name: Create Calico operator custom resources
+      shell: kubectl create -f https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
+      retries: 5
+      delay: 20
+      register: install_calico_op_cr_output
+      until: install_calico_op_cr_output.rc == 0
+
+    - name: Debug Calico operator custom resource create output
+      debug:
+        msg: "{{ iinstall_calico_op_cr_output.stdout }}"
+  when: '"tigera-op" in networkplugin'
+
 - name: Weave
   block:
     - name: Install Weave
