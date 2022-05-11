@@ -40,7 +40,7 @@
 
     - name: Debug Calico operator custom resource create output
       debug:
-        msg: "{{ iinstall_calico_op_cr_output.stdout }}"
+        msg: "{{ install_calico_op_cr_output.stdout }}"
   when: '"tigera-op" in networkplugin'
 
 - name: Weave
