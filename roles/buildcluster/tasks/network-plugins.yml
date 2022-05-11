@@ -3,7 +3,7 @@
   block:
     - name: Get Calico config yaml
       get_url:
-        url: https://docs.projectcalico.org/manifests/calico.yaml
+        url: https://projectcalico.docs.tigera.io/manifests/calico.yaml
         dest: /home/kube/calico.yaml
 
     - name: Apply Calico yaml
