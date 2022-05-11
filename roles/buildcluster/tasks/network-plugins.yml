@@ -8,7 +8,10 @@
 
     - name: Apply Calico yaml
       shell: kubectl apply -f calico.yaml
+      retries: 5
+      delay: 20
       register: install_calico_output
+      until: install_calico_output.rc == 0
 
     - name: Debug install calico output
       debug:
