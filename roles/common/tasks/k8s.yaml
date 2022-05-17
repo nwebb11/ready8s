@@ -59,3 +59,12 @@
   become: yes
   retries: 5
   delay: 10
+
+- name: Hold Kubernetes packages
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  loop:
+    - kubelet
+    - kubeadm
+    - kubectl
