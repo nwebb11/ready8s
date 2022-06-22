@@ -77,7 +77,7 @@
 
 - name: Install containerd
   apt:
-    name: containerd
+    name: containerd.io
     state: latest
   become: yes
   retries: 5
