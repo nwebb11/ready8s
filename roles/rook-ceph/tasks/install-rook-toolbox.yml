@@ -2,20 +2,20 @@
 - name: Install rook toolbox
   block:
 
-    - name: Create rook-toolbox directory
-      file:
-        path: $HOME/rook/toolbox
-        state: directory
-        mode: '0775'
+#    - name: Create rook-toolbox directory
+#      file:
+#        path: $HOME/rook/toolbox
+#        state: directory
+#        mode: '0775'
 
-    - name: Copy toolbox.yaml file to first master
-      copy:
-        src: toolbox.yaml
-        dest: $HOME/rook/toolbox
+#    - name: Copy toolbox.yaml file to first master
+#      copy:
+#        src: toolbox.yaml
+#        dest: $HOME/rook/toolbox
 
     - name: Apply toolbox.yaml deployment to the cluster
       shell: |
-        cd $HOME/rook/toolbox
+        cd $HOME/rook/rook-ceph/deploy/examples
         kubectl create -f toolbox.yaml
       register: toolbox_apply_output
 

@@ -3,23 +3,43 @@
   block:
     - name: Get Calico config yaml
       get_url:
-        url: https://docs.projectcalico.org/manifests/calico.yaml
+        url: https://projectcalico.docs.tigera.io/manifests/calico.yaml
         dest: /home/kube/calico.yaml
 
     - name: Apply Calico yaml
       shell: kubectl apply -f calico.yaml
+      retries: 5
+      delay: 20
       register: install_calico_output
+      until: install_calico_output.rc == 0
 
     - name: Debug install calico output
       debug:
         msg: "{{ install_calico_output.stdout }}"
   when: '"calico" in networkplugin'
 
+- name: Calico-operator
+  block:
+    - name: Create Calico operator
+      shell: kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+      retries: 5
+      delay: 20
+      register: install_calico_op_output
+      until: install_calico_op_output.rc == 0
+
+    - name: Debug Calico operator create output
+      debug:
+        msg: "{{ install_calico_op_output.stdout }}"
+  when: '"tigera-op" in networkplugin'
+
 - name: Weave
   block:
     - name: Install Weave
       shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+      retries: 5
+      delay: 20
       register: install_weave_output
+      until: install_weave_output.rc == 0
 
     - name: Debug install weave output
       debug:
@@ -37,6 +57,69 @@
         msg: "{{ install_flannel_output.stdout }}"
   when: '"flannel" in networkplugin'
 
-- name: Wait 60 seconds for the container network to build
-  pause:
-    seconds: 60
+- name: Cilium
+  block:
+    - name: Install Cilium
+      shell: kubectl apply -f https://raw.githubusercontent.com/nwebb11/ready8s/v2.3.2/roles/buildcluster/files/install-cilium.yaml
+      retries: 5
+      delay: 20
+      register: install_cilium_output
+      until: install_cilium_output.rc == 0
+
+    - name: Debug install cilium output
+      debug:
+        msg: "{{ install_cilium_output.stdout }}"
+  when: '"cilium" in networkplugin'
+
+- name: Cilium-cli
+  block:
+    - name: Setup Cilium
+      shell: |
+        curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz{,.sha256sum}
+        sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
+        sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+      register: setup_cilium_output
+
+    - name: Debug install cilium output
+      debug:
+        msg: "{{ setup_cilium_output.stdout }}"
+
+    - name: Install Cilium
+      shell: /usr/local/bin/cilium install --ipam kubernetes
+      retries: 5
+      delay: 20
+      register: install_ciliumcli_output
+      until: install_ciliumcli_output.rc == 0
+
+    - name: Debug install cilium output
+      debug:
+        msg: "{{ install_ciliumcli_output.stdout }}"
+  when: '"cilium-cli" in networkplugin'
+
+- name: Cilium-helm
+  block:
+    - name: Install Helm
+      shell: |
+        curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+        sudo apt-get install apt-transport-https --yes
+        echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+        sudo apt-get update -y
+        sudo apt-get install helm -y
+        helm repo add cilium https://helm.cilium.io/
+      register: install_helm_output
+
+    - name: Debug install helm output
+      debug:
+        msg: "{{ install_helm_output.stdout }}"
+
+    - name: Install Cilium-helm
+      shell: helm install cilium cilium/cilium --version 1.11.4 --namespace kube-system --set ipam.mode=kubernetes --set hubble.enabled=false --set operator.replicas=1
+      retries: 5
+      delay: 20
+      register: install_cilium_helm_output
+      until: install_cilium_helm_output.rc == 0
+
+    - name: Debug install cilium-helm output
+      debug:
+        msg: "{{ install_cilium_helm_output.stdout }}"
+  when: '"cil-helm" in networkplugin'
