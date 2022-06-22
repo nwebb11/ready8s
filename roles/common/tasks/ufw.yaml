@@ -1,30 +1,35 @@
 ---
-- name: Install UFW
-  apt:
-    name: ufw
-    state: latest
-  become: yes
-  retries: 5
+- name: Install & Configure UFW (common)
+  block:
 
-- name: Enable UFW and start on reboot
-  ufw:
-    state: enabled
+    - name: Install UFW (common)
+      apt:
+        name: ufw
+        state: latest
+      become: yes
+      retries: 5
 
-- name: Copy UFW profile
-  copy:
-    src: k8snode.ufw.profile
-    dest: /etc/ufw/applications.d
-    owner: root
-    group: root
-    mode: '0644'
+    - name: Enable UFW and start on reboot (common)
+      ufw:
+        state: enabled
 
-- name: Apply UFW profiles for all nodes
-  ufw:
-    rule: allow
-    name: "{{ item }}"
-  with_items:
-    - AllNodesProfile-TCP
-    - AllNodesProfile-UDP
+    - name: Copy UFW profile (common)
+      copy:
+        src: k8snode.ufw.profile
+        dest: /etc/ufw/applications.d
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Apply UFW profiles for all nodes (common)
+      ufw:
+        rule: allow
+        name: "{{ item }}"
+      with_items:
+        - AllNodesProfile-TCP
+        - AllNodesProfile-UDP
+
+  when: '"true" in ufwfirewall'
 
 #- hosts:
 #  master:

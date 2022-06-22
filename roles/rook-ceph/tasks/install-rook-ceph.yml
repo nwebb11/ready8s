@@ -6,11 +6,11 @@
       git:
         repo: 'https://github.com/rook/rook.git'
         dest: $HOME/rook/rook-ceph
-        version: v1.6.1
+        version: v1.8.6
     
     - name: Create and apply crds, common and operator yaml configuration files
       shell: |
-        cd $HOME/rook/rook-ceph/cluster/examples/kubernetes/ceph
+        cd $HOME/rook/rook-ceph/deploy/examples
         kubectl create -f crds.yaml -f common.yaml -f operator.yaml
       register: crds_common_operator_output
 
@@ -20,7 +20,7 @@
 
     - name: Create and apply cluster.yaml configuration file
       shell: |
-        cd $HOME/rook/rook-ceph/cluster/examples/kubernetes/ceph
+        cd $HOME/rook/rook-ceph/deploy/examples
         kubectl create -f cluster.yaml
       register: cluster_yaml_output
 

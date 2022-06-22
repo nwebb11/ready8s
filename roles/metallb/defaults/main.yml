@@ -1,2 +1,2 @@
 ---
-loadbalancer_ip_range: 192.168.88.230-192.168.88.240
+loadbalancer_ip_range: 10.1.11.220-10.1.11.222
