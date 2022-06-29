@@ -8,6 +8,16 @@
     group: root
     mode: '0644'
 
+- name: Set rp_filter under sysctl
+  copy:
+    dest: "/etc/sysctl.d/90-override.conf"
+    content: |
+      net.ipv4.conf.default.rp_filter = 0
+      net.ipv4.conf.*.rp_filter = 0
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: Reboot the server
   shell: sleep 5 && reboot
   async: 1
