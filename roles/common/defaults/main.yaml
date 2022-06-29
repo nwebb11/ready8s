@@ -2,21 +2,18 @@
 service_subnet: 172.26.0.0/18
 pod_subnet: 172.26.64.0/18
 dnsdomain: cluster.local
-kube_version: 1.24.0
+kube_version: 1.24.2
 policy: enabled
-cluster_name: ready8s1-cluster
+cluster_name: ready8s-cluster
 certsans:
   - name: localhost
-  - name: ready8s1-cluster.saa-cons.co.uk
-  - name: ready8s1-cluster
-  - name: ready8s1-master1.saa-cons.co.uk
-  - name: ready8s1-master2.saa-cons.co.uk
-  - name: ready8s1-master3.saa-cons.co.uk
-  - name: ready8s1-worker1.saa-cons.co.uk
-  - name: 10.2.21.85
-  - name: 10.2.21.86
-  - name: 10.2.21.87
-  - name: 10.2.21.88
+  - name: ready8s-cluster
+  - name: master1
+  - name: master2
+  - name: worker1
+  - name: 192.168.1.88
+  - name: 192.168.1.89
+  - name: 192.168.1.90
 
 system_reserved_memory: 512Mi
 kube_reserved_memory: 128Mi
