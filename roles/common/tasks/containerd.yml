@@ -104,8 +104,4 @@
     regexp: '^            SystemdCgroup = false'
     line: '            SystemdCgroup = true'
     backrefs: yes
-
-- name: Restart containerd
-  ansible.builtin.systemd:
-    name: containerd
-    state: restarted
+  notify: Restart containerd
