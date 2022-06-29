@@ -7,3 +7,6 @@
   
 - name: Reload Docker daemon and systemd, and enable Docker on boot
   import_tasks: docker-handler.yaml
+
+- name: Reload haproxy with systemd
+  import_tasks: haproxy-handler.yml
