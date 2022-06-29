@@ -10,3 +10,6 @@
 
 - name: Reload haproxy with systemd
   import_tasks: haproxy-handler.yml
+
+- name: Reload containerd with systemd
+  import_tasks: containerd-handler.yml
