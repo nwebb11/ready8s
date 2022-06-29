@@ -1,6 +1,3 @@
 ---
 - name: Reload UFW
   import_tasks: roles/common/handlers/ufw-handler.yaml
-
-- name: Reload haporxy with systemd
-  import_tasks: haproxy-handler.yaml
