@@ -2,6 +2,3 @@
 - name: Enable and open ports with UFW
   import_tasks: ufw-worker.yaml
 #  when: ansible_facts['os_family'] == "Ubuntu"
-
-- name: Install and configure Haproxy
-  import_tasks: proxy.yml
