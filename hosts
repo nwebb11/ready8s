@@ -1,16 +1,16 @@
 [all]
-master1
-master2
-worker1
+master1 ansible_host=192.168.0.88
+master2 ansible_host=192.168.0.89
+worker1 ansible_host=192.168.0.90
 
 [all:vars]
 ansible_user=kube
 ansible_ssh_private_key_file=~/.ssh/id_rsa
 #ready8s options
-networkplugin=cilium-helm
+networkplugin=cil-helm
 multimaster=false
 loadbalancer=true
-ufwfirewall=false
+ufwfirewall=true
 replicatestorage=false
 dashboard=false
 
