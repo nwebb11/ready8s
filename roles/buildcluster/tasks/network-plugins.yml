@@ -113,7 +113,7 @@
         msg: "{{ install_helm_output.stdout }}"
 
     - name: Install Cilium-helm
-      shell: helm install cilium cilium/cilium --version 1.11.6 --namespace kube-system --set ipam.mode=kubernetes --set hubble.enabled=false --set operator.replicas=1
+      shell: helm install cilium cilium/cilium --version 1.12.3 --namespace kube-system --set ipam.mode=kubernetes --set hubble.enabled=false --set operator.replicas=1
       retries: 5
       delay: 20
       register: install_cilium_helm_output
