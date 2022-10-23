@@ -2,7 +2,7 @@
 service_subnet: 172.26.0.0/18
 pod_subnet: 172.26.64.0/18
 dnsdomain: cluster.local
-kube_version: 1.24.2
+kube_version: 1.25.3
 policy: enabled
 cluster_name: ready8s-cluster
 certsans:
@@ -11,9 +11,9 @@ certsans:
   - name: master1
   - name: master2
   - name: worker1
-  - name: 192.168.1.88
-  - name: 192.168.1.89
-  - name: 192.168.1.90
+  - name: 192.168.0.88
+  - name: 192.168.0.89
+  - name: 192.168.0.90
 
 system_reserved_memory: 512Mi
 kube_reserved_memory: 128Mi
