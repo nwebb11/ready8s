@@ -1,14 +1,6 @@
 ---
-- name: Apply and create MetalLB namespace
-  shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
-  register: metallb_namespace_output
-
-- name: Debug MetalLB namespace apply
-  debug:
-    msg: "{{ metallb_namespace_output.stdout }}"
-
 - name: Create and deploy MetalLB to the cluster
-  shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
+  shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
   register: metallb_deploy_output
 
 - name: Debug MetalLB deployment
