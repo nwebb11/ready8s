@@ -29,7 +29,7 @@
 - hosts: master[1:]
   serial: 1
   tasks:
-  
+
   - name: Wait for cluster to build
     pause:
       seconds: 60
@@ -61,14 +61,6 @@
 
   - name: Untaint all master nodes
     block:
-      - name: Apply kubectl masters taint command (**removed in 1.25**)
-        shell: kubectl taint nodes --all node-role.kubernetes.io/master-
-        register: taint_master_output
-
-      - name: Debug taint masters output
-        debug:
-          msg: "{{ taint_master_output.stdout }}"
-
       - name: Apply kubectl controlplane taint command
         shell: kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
         register: taint_controlplane_output
