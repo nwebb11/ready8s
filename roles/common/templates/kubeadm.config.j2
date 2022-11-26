@@ -14,7 +14,7 @@ networking:
   serviceSubnet: "{{ service_subnet }}"
   podSubnet: "{{ pod_subnet }}"
   dnsDomain: "{{ dnsdomain }}"
-kubernetesVersion: "v{{ kube_version }}"
+kubernetesVersion: "v{{ hostvars[groups['all'][0]].k8sversion }}"
 controlPlaneEndpoint: "127.0.0.1:443"
 apiServer:
   extraArgs:
