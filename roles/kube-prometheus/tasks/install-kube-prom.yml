@@ -1,0 +1,18 @@
+---
+- name: Install kube-prometheus
+  block:
+
+    - name: Clone kube-prometheus git repository to home directory
+      git:
+        repo: 'https://github.com/prometheus-operator/kube-prometheus.git'
+        dest: $HOME/kube-prometheus
+        version: release-0.11
+
+    - name: Create namespace and CRDs for kube-prometheus stack and install
+      shell: |
+        cd $HOME/kube-prometheus
+        kubectl apply --server-side -f manifests/setup
+        kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
+        kubectl apply -f manifests/
+
+  when: '"true" in monitoring'
