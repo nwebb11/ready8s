@@ -26,6 +26,10 @@
 
 - hosts: master[0]
   roles:
+    - kube-prometheus
+
+- hosts: master[0]
+  roles:
     - dashboard
 
 - hosts: master[0]
